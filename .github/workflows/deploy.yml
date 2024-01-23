@@ -27,6 +27,7 @@ jobs:
       - name: Run a multi-line script
         run: |
           npm install
+          git config pull.rebase false
           git pull origin deployed
           git checkout deployed
           git add node_modules

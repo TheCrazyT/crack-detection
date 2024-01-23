@@ -30,4 +30,9 @@ jobs:
           git config pull.rebase false
           git add -f node_modules
           git commit -m "node_modules updated"
-          git push --force origin/deployed
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: origin/deployed
+          force: true

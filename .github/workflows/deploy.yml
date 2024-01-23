@@ -28,8 +28,6 @@ jobs:
         run: |
           npm install
           git config pull.rebase false
-          git pull origin deployed
-          git checkout deployed
           git add node_modules
           git commit -m "node_modules updated"
-          git push
+          git push --force origin/deployed

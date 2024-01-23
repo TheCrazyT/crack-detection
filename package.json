@@ -4,10 +4,37 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prep": "yarn && yarn prep:files && yarn build",
+    "prep:files": "mkdirp dist && mkdirp dist/js && touch dist/js/bundle.js",
+    "sass-watch": "sass -w src/sass/main.scss dist/css/main.min.css",
+    "sass-build": "sass src/sass/main.scss dist/css/main.min.css --style compressed",
+    "html-watch": "while inotifywait -e close_write src/index.html; do cp src/index.html dist/index.html; done",
+    "js-watch": "watchify src/ts/index.ts -p [tsify] -o dist/js/bundle.js -v --debug",
+    "js-build": "browserify src/ts/index.ts -p [tsify] -o dist/js/bundle.js",
+    "js-compress": "uglifyjs dist/js/bundle.js -c -m -o dist/js/bundle.js",
+    "dev:server": "python3 -m http.server -d dist 3000",
+    "build": "concurrently \"yarn sass-build\" \"yarn js-build && yarn js-compress\"",
+    "dev": "concurrently \"yarn html-watch\" \"yarn sass-watch\" \"yarn js-watch\" \"yarn dev:server\"",
+    "lint": "tslint -p . -t verbose"
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "@types/lodash": "^4.14.202",
+    "@types/stats.js": "^0.17.0",
+    "browserify": "^17.0.0",
+    "browserify-shim": "^3.8.16",
+    "concurrently": "^8.2.2",
+    "lodash": "^4.17.21",
+    "mkdirp": "^3.0.1",
+    "sass": "^1.69.7",
+    "stats.js": "^0.17.0",
+    "tsify": "^5.0.4",
+    "tslint": "^5.20.1",
+    "typescript": "^5.3.3",
+    "uglify-js": "^3.17.4",
+    "watchify": "^4.0.0"
+  },
   "dependencies": {
     "@tensorflow/tfjs-core": "^4.16.0"
   }

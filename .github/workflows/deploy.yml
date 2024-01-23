@@ -28,6 +28,8 @@ jobs:
         run: |
           npm install
           git config pull.rebase false
+          git config --global user.email "TheCrazyT@users.noreply.github.com"
+          git config --global user.name "TheCrazyT"
           git add -f node_modules
           git commit -m "node_modules updated"
       - name: Push changes

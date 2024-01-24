@@ -33,6 +33,7 @@ jobs:
           git add -f node_modules
           yarn build
           cp src/index.html dist/
+          cp -R model dist/
           git add -f dist
           git commit -m "node_modules updated"
       - name: Push changes

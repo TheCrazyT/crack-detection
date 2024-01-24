@@ -16,13 +16,16 @@
  * =============================================================================
  */
 
-import {addClass, removeClass} from './classes';
-import {camera} from './camera';
-import {isMobile, isChromeIOS } from './utils';
+import * as tfc from '@tensorflow/tfjs-core';
+import {addClass} from './classes';
+import {camera, VIDEO_PIXELS} from './camera';
+import {isMobile, isChromeIOS} from './utils';
+import {MobileNet} from './mobilenet'
 
 export const VIEWS = {
   LOADING: 'loading',
   QUIT: 'quit',
+  CAMERA: 'camera',
   LANDING: 'landing'
 }
 
@@ -84,6 +87,7 @@ export interface ViewsListTypes {
 }
 
 export class Ui {
+  mobileNet:MobileNet;
 
   viewsList: ViewsListTypes;
   startGameBtn: HTMLButtonElement;
@@ -112,7 +116,12 @@ export class Ui {
   prevActiveView: string;
 
   constructor() {
+    this.mobileNet = new MobileNet();
     this.viewsList = {
+      [VIEWS.LOADING]: document.querySelector(SELECTORS.VIEWS_LOADING),
+      [VIEWS.QUIT]: document.querySelector(SELECTORS.VIEWS_QUIT),
+      [VIEWS.LANDING]: document.querySelector(SELECTORS.VIEWS_LANDING),
+      [VIEWS.CAMERA]: document.querySelector(SELECTORS.VIEWS_CAMERA)
     };
 
     this.startGameBtn = document.querySelector(SELECTORS.START_GAME_BTN);
@@ -185,16 +194,26 @@ export class Ui {
     }
   }
 
+  warmUpModel() {
+    this.mobileNet.predict(
+        tfc.zeros([VIDEO_PIXELS, VIDEO_PIXELS, 3]));
+  }
+
   /**
    * Registers various UI events for buttons.
    */
   addEvents() {
-
-
     if (this.startGameBtn) {
       this.startGameBtn.addEventListener('click', () => {
-        camera.setupCamera().then((value: CameraDimentions) => {
-          camera.setupVideoDimensions(value[0], value[1]);
+        this.mobileNet.load().then(() => 
+        {
+          this.warmUpModel();
+          camera.setupCamera().then((value: CameraDimentions) => {
+            camera.setupVideoDimensions(value[0], value[1]);
+            camera.unPauseCamera();
+            this.hideView(VIEWS.LANDING);
+            this.showView(VIEWS.CAMERA);
+          });
         });
       });
     }
@@ -246,33 +265,7 @@ export class Ui {
     this.activeView = view;
   }
 
-  /**
-   * A generic view function that enables the slide in of UI views.
-   * @param view The view to slide in
-   * @param cssClass The css class to apply to the view
-   * @param hideAfter Indicating if we need to hide the view after the
-   * transition ends.
-   *
-   * @returns A Promise when the slide transition ends.
-   */
-  slideView(view: string, cssClass: string, hideAfter = true) {
-    return new Promise(resolve => {
-
-      const transitionEnded = (e: Event) => {
-
-        if (hideAfter) {
-          this.hideView(view);
-          removeClass(this.viewsList[view], cssClass);
-        }
-        this.viewsList[view].removeEventListener('transitionend',
-            transitionEnded);
-        resolve(true);
-      };
-
-      this.viewsList[view].addEventListener('transitionend', transitionEnded);
-      addClass(this.viewsList[view], cssClass);
-    });
-  }
+  
 }
 
 export let ui = new Ui();

@@ -13,7 +13,7 @@
     "js-build": "browserify src/ts/index.ts -p [tsify] -o dist/js/bundle.js",
     "js-compress": "uglifyjs dist/js/bundle.js -c -m -o dist/js/bundle.js",
     "dev:server": "python3 -m http.server -d dist 3000",
-    "build": "concurrently \"yarn sass-build\" \"yarn js-build && yarn js-compress\"",
+    "build": "concurrently \"cp -R model dist/\" \"yarn sass-build\" \"yarn js-build && yarn js-compress\"",
     "dev": "concurrently \"yarn html-watch\" \"yarn sass-watch\" \"yarn js-watch\" \"yarn dev:server\"",
     "lint": "tslint -p . -t verbose"
   },
@@ -36,6 +36,8 @@
     "watchify": "^4.0.0"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^4.16.0",
+    "@tensorflow/tfjs-converter": "^4.16.0",
     "@tensorflow/tfjs-core": "^4.16.0"
   }
 }

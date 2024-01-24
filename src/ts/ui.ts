@@ -17,7 +17,7 @@
  */
 
 import * as tfc from '@tensorflow/tfjs-core';
-import {addClass} from './classes';
+import {addClass, removeClass} from './classes';
 import {camera, VIDEO_PIXELS} from './camera';
 import {isMobile, isChromeIOS} from './utils';
 import {MobileNet} from './mobilenet'
@@ -166,6 +166,32 @@ export class Ui {
     this.addEvents();
   }
 
+  async predict() {
+      const result = tfc.tidy(() => {
+        const pixels = tfc.browser.fromPixels(camera.videoElement);
+        const centerHeight = pixels.shape[0] / 2;
+        const beginHeight = centerHeight - (VIDEO_PIXELS / 2);
+        const centerWidth = pixels.shape[1] / 2;
+        const beginWidth = centerWidth - (VIDEO_PIXELS / 2);
+        const pixelsCropped =
+              pixels.slice([beginHeight, beginWidth, 0],
+                           [VIDEO_PIXELS, VIDEO_PIXELS, 3]).cast("float32");
+        return this.mobileNet.predict(tfc.div(pixelsCropped,tfc.scalar(255.0)));
+      });
+      const values = result.dataSync();
+      result.dispose();
+      if(values[0] > 0.8){
+        removeClass(this.viewsList[VIEWS.CAMERA], 'black-border');
+        addClass(this.viewsList[VIEWS.CAMERA], 'red-border');
+      }else{
+        removeClass(this.viewsList[VIEWS.CAMERA], 'red-border');
+        addClass(this.viewsList[VIEWS.CAMERA], 'black-border');
+      }
+      // To ensure better page responsiveness we call our predict function via
+      // requestAnimationFrame - see goo.gl/1d9cJa
+      requestAnimationFrame(() => this.predict());
+  }
+
   /**
    * Sets various messages related to platform support and info relating to
    * the game being best experienced on mobile.
@@ -213,6 +239,7 @@ export class Ui {
             camera.unPauseCamera();
             this.hideView(VIEWS.LANDING);
             this.showView(VIEWS.CAMERA);
+            this.predict();
           });
         });
       });

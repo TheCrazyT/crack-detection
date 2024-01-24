@@ -22,7 +22,7 @@ import * as tf from '@tensorflow/tfjs';
 
 type TensorMap = {[name: string]: tfc.Tensor};
 
-const MODEL_FILE_URL = '/model/model.json';
+const MODEL_FILE_URL = './model/model.json';
 const INPUT_NODE_NAME = 'input';
 const OUTPUT_NODE_NAME = 'final_result';
 

@@ -176,7 +176,7 @@ export class Ui {
         const pixelsCropped =
               pixels.slice([beginHeight, beginWidth, 0],
                            [VIDEO_PIXELS, VIDEO_PIXELS, 3]).cast("float32");
-        return this.mobileNet.predict(tfc.div(pixelsCropped,tfc.scalar(255.0)));
+        return this.mobileNet.predict(pixelsCropped);
       });
       const values = result.dataSync();
       result.dispose();

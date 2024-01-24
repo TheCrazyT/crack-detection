@@ -18,26 +18,27 @@
 
 import * as tfc from '@tensorflow/tfjs-core';
 import * as tf from '@tensorflow/tfjs';
-
+import { loadGraphModel } from '@tensorflow/tfjs-converter';
+import '@tensorflow/tfjs-backend-webgl';
 
 type TensorMap = {[name: string]: tfc.Tensor};
 
 const MODEL_FILE_URL = './model/model.json';
-const INPUT_NODE_NAME = 'input';
-const OUTPUT_NODE_NAME = 'final_result';
+const INPUT_NODE_NAME = 'MobilenetV3large_input';
+const OUTPUT_NODE_NAME = 'Identity:0';
 
 
 export class MobileNet {
 
-  model: tf.LayersModel;
+  model: tf.GraphModel;
 
   async load() {
-    this.model = await tf.loadLayersModel(
-      MODEL_FILE_URL
-    );
-    /*this.model = await tf.loadGraphModel(
+    /*this.model = await tf.loadLayersModel(
       MODEL_FILE_URL
     );*/
+    this.model = await loadGraphModel(
+      MODEL_FILE_URL
+    );
   }
 
   dispose() {
@@ -57,8 +58,7 @@ export class MobileNet {
     const preprocessedInput = input;/* tfc.div(
         tfc.sub(input.asType('float32'), PREPROCESS_DIVISOR),
         PREPROCESS_DIVISOR);*/
-    const reshapedInput =
-        preprocessedInput.reshape([1, ...preprocessedInput.shape]);
+    const reshapedInput = tf.reshape(preprocessedInput,[1, ...preprocessedInput.shape]);
     const dict: TensorMap = {};
     dict[INPUT_NODE_NAME] = reshapedInput;
     return this.model.execute(dict, OUTPUT_NODE_NAME) as tfc.Tensor1D;

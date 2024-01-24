@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@tensorflow/tfjs": "^4.16.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.16.0",
     "@tensorflow/tfjs-converter": "^4.16.0",
     "@tensorflow/tfjs-core": "^4.16.0"
   }

@@ -34,6 +34,7 @@ jobs:
           yarn build
           cp src/index.html dist/
           cp -R model dist/
+          sha1sum model/* > dist/shasum.txt
           git add -f dist
           git commit -m "node_modules updated"
       - name: Push changes

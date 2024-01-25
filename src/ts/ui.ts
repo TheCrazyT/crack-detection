@@ -162,7 +162,7 @@ export class Ui {
    */
   init() {
     this.setPlatformMessages();
-    this.setCameraFacing();
+    //this.setCameraFacing();
     this.addEvents();
     this.startGameBtn.style.display = "block";
   }

@@ -181,7 +181,7 @@ export class Ui {
       });
       const values = result.dataSync();
       result.dispose();
-      this.predictionResultsEl.innerText = values[0];
+      this.predictionResultsEl.innerText = values[0].toString();
       if(values[0] > 0.8){
         removeClass(this.viewsList[VIEWS.CAMERA], 'black-border');
         addClass(this.viewsList[VIEWS.CAMERA], 'red-border');

@@ -164,6 +164,7 @@ export class Ui {
     this.setPlatformMessages();
     this.setCameraFacing();
     this.addEvents();
+    this.startGameBtn.style.display = "block";
   }
 
   async predict() {
@@ -231,6 +232,7 @@ export class Ui {
   addEvents() {
     if (this.startGameBtn) {
       this.startGameBtn.addEventListener('click', () => {
+        this.startGameBtn.style.display = "none";
         this.mobileNet.load().then(() => 
         {
           this.warmUpModel();

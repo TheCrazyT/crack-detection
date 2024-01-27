@@ -1,0 +1,4 @@
+5ebeb429091df3aa46b995a134b01ff0ff097105  model/group1-shard1of3.bin
+3ce4a6242ea9bc02874b77d7d4e609d7fceb0061  model/group1-shard2of3.bin
+fe0ec4fc367c1d9490b98ca6b1285694c67cc0b6  model/group1-shard3of3.bin
+e382e9e403301331765386cefb6de8ce18d267ca  model/model.json

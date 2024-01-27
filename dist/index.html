@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC:700|Roboto:300,400|Changa+One">
+    <link rel="stylesheet" href="css/main.min.css">
+  </head>
+  <body>
+    <div class="views">
+      <div class="view__loading view__loading--js">
+        <p class="views__heading view__loading__heading">Loading ...</p>
+      </div>
+
+      <div class="view__quit view__quit--js">
+        <p class="views__heading view__quit__heading">Are you sure you want to quit?</p>
+        <button class="btn cancel-btn quit-cancel-btn--js">Cancel</button>
+        <button class="btn quit-btn quit-btn--js">Quit</button>
+      </div>
+
+      <div class="view__landing view__landing--js">
+        <p class="view__landing__intro view__landing__intro--js">
+        <button class="btn play-btn landing__play-btn--js" style="display:none">Start</button>
+      </div>
+
+
+      <div class="view__found-x-items view__found-x-items--js">
+        <button class="btn play-again-btn--js">Restart</button>
+      </div>
+
+      <div class="view__camera view__camera--js">
+        <button class="view__camera__quit-btn view__camera__quit-btn--js">Quit</button>
+        <div class="view__camera__prediction-results view__camera__prediction-results--js"></div>
+        <div class="view__camera__fps view__camera__fps--js"></div>
+        <div class="camera__capture-wrapper camera__capture-wrapper--js">
+          <div class="camera__capture-flash camera__capture-flash--js"></div>
+          <video class="camera__element camera__element--js" autoplay playsinline></video>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/bundle.js"></script>
+  </body>
+</html>
